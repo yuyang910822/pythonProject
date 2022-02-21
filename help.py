@@ -20,3 +20,10 @@ testcase：存放测试用例
 """
 
 
+from selenium import webdriver
+
+driver = webdriver.Chrome()
+driver.get(r'C:\Users\yuyang\PycharmProjects\pythonProject\report\2022-02-10 19~04~11result.html')
+driver.maximize_window()
+# driver.get_screenshot_as_png(r'C:\Users\yuyang\PycharmProjects\pythonProject\png\1.jpg')
+driver.get_screenshot_as_file(r'C:\Users\yuyang\PycharmProjects\pythonProject\png\1.png')

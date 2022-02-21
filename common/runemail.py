@@ -6,6 +6,7 @@ import unittest
 import HTMLTestRunner
 from runtest import runtest
 from email.mime.application import MIMEApplication
+from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from common.main import Main
@@ -38,11 +39,17 @@ def runEmail():
     target_dir = os.path.join(report_dir, os.listdir(report_dir)[-1])
 
     # 构建HTML文本
-    file = open(target_dir, 'rb')
-    file_data = file.read()
-    file.close()
-    body = MIMEText(file_data, 'html', 'utf8')
+    # file = open(target_dir, 'rb')
+    # file_data = file.read()
+    # file.close()
+    # body = MIMEText(file_data, 'html', 'utf8')
 
+
+    # 构造图片正文
+    file = open("../png/1.png", 'rb').read()
+    png = MIMEImage(file)
+    png.add_header('Content-ID', "<image1>")
+    png["Content-Disposition"] = 'attachment; filename="testimage.png"'
     # 构造附件
 
     html = MIMEApplication(open(target_dir, 'rb').read())
@@ -59,7 +66,8 @@ def runEmail():
     mail['Subject'] = title
     mail['From'] = sender  # 发件人
     mail['To'] = receiver  # 收件人；[]里的三个是固定写法，别问为什么，我只是代码的搬运工
-    mail.attach(body)
+    # mail.attach(body)
+    mail.attach(png)
     mail.attach(html)
     try:
         smtp = smtplib.SMTP(mail_server, port=587)  # 连接邮箱服务器
@@ -74,5 +82,5 @@ def runEmail():
 
 
 if __name__ == '__main__':
-    runtest()
+    # runtest()
     runEmail()
