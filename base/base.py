@@ -46,6 +46,7 @@ class Base(object):
     def re1(self, info: dict) -> Response:
         """
         封装接口请求
+        :param 请求信息
         :return: 响应信息
         """
         times = int(time.time()*1000)
@@ -64,13 +65,13 @@ class Base(object):
         setattr(self, name, t)
         return t
 
-    def getToken(self, login_info) -> str:
+    def getToken(self, info: dict) -> str:
         """
         登录获取对应token
-        :param login_info: 登录接口请求信息
+        :param info: 请求信息
         :return:
         """
-        r = self.re1(**login_info)
+        r = self.re1(info)
         return jsonpath.jsonpath(r.json(), '$..token')[0]
 
     @staticmethod
@@ -88,6 +89,11 @@ class Base(object):
         :return:
         """
         return time.strftime("%Y-%m-%d|%H:%M:%S")
+
+    @staticmethod
+    def getTimeStamp(self):
+        """时间戳"""
+        return time.time()*1000
 
 
 if __name__ == '__main__':
